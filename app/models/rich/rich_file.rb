@@ -12,7 +12,7 @@ module Rich
     
     has_attached_file :rich_file,
                       :styles => Proc.new {|a| a.instance.set_styles },
-                      :convert_options => Proc.new { |a| Rich.convert_options[a] }
+                      :convert_options => Proc.new { |a| Rich.convert_options[a] },
                       :storage => Rich.file_storage,
                       :s3_permissions => :public_read,
                       :s3_host_alias => AWS_S3_BUCKET+'.s3.amazonaws.com',
