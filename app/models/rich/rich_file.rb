@@ -14,7 +14,7 @@ module Rich
                       :storage => Rich.file_storage,
                       :s3_host_alias => AWS_S3_BUCKET+'.s3.amazonaws.com',
                       :url => ':s3_alias_url',
-                      :path => "/rich/:style/:clean_file_name",
+                      :path => "/rich/:style/:id.:extension",
                       :s3_credentials => Rich.s3_credentials,
                       :s3_permissions => :public_read,
                       :styles => Proc.new {|a| a.instance.set_styles },
