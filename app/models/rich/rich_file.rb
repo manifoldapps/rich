@@ -72,7 +72,11 @@ module Rich
     end
     
     def check_content_type
-      self.rich_file.instance_write(:content_type, MIME::Types.type_for(rich_file_file_name)[0].content_type)
+      if extension.downcase == 'pdf'
+        self.rich_file.instance_write(:content_type, "application/pdf")
+      else
+        self.rich_file.instance_write(:content_type, MIME::Types.type_for(rich_file_file_name)[0].content_type)
+      end
       
       unless Rich.validate_mime_type(self.rich_file_content_type, self.simplified_type)
         self.errors[:base] << "'#{self.rich_file_file_name}' is not the right type."
