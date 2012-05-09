@@ -12,6 +12,10 @@ module Rich
       def copy_initializer
         template 'rich.rb.erb', 'config/initializers/rich.rb'
       end
+
+      def copy_amazon_s3_initializer
+        template 'amazon_s3.rb.erb', 'config/initializers/amazon_s3.rb'
+      end
       
       def setup_route
         route "mount Rich::Engine => '/rich', :as => 'rich'"
