@@ -23,6 +23,8 @@ module Rich
     validates_attachment_presence :rich_file
     validate :check_content_type
     validates_attachment_size :rich_file, :less_than=>15.megabyte, :message => "must be smaller than 15MB"
+
+    before_post_process :set_content_type 
     
     before_create :clean_file_name
 
@@ -71,6 +73,14 @@ module Rich
       self.rich_file.instance_write(:file_name, "#{filename}.#{extension}")
     end
     
+    def set_content_type
+      if File.extname(rich_file_file_name).gsub(/^\.+/, '').downcase == 'pdf'
+        self.rich_file.instance_write(:content_type, "application/pdf")
+      else
+        self.rich_file.instance_write(:content_type, MIME::Types.type_for(rich_file_file_name)[0].content_type)
+      end
+    end
+
     def check_content_type
       if File.extname(rich_file_file_name).gsub(/^\.+/, '').downcase == 'pdf'
         self.rich_file.instance_write(:content_type, "application/pdf")
