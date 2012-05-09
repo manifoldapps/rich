@@ -74,20 +74,19 @@ module Rich
     end
     
     def set_content_type
+      puts "file extension = #{File.extname(rich_file_file_name).gsub(/^\.+/, '').downcase}"
       if File.extname(rich_file_file_name).gsub(/^\.+/, '').downcase == 'pdf'
         self.rich_file.instance_write(:content_type, "application/pdf")
+        puts "picked pdf"
       else
         self.rich_file.instance_write(:content_type, MIME::Types.type_for(rich_file_file_name)[0].content_type)
+        puts "picked other: #{MIME::Types.type_for(rich_file_file_name)[0].content_type}"
       end
     end
 
     def check_content_type
-      if File.extname(rich_file_file_name).gsub(/^\.+/, '').downcase == 'pdf'
-        self.rich_file.instance_write(:content_type, "application/pdf")
-      else
-        self.rich_file.instance_write(:content_type, MIME::Types.type_for(rich_file_file_name)[0].content_type)
-      end
-      
+      self.rich_file.instance_write(:content_type, MIME::Types.type_for(rich_file_file_name)[0].content_type)
+            
       unless Rich.validate_mime_type(self.rich_file_content_type, self.simplified_type)
         self.errors[:base] << "'#{self.rich_file_file_name}' is not the right type."
       end
