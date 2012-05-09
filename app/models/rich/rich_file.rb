@@ -72,7 +72,7 @@ module Rich
     end
     
     def check_content_type
-      if extension.downcase == 'pdf'
+      if File.extname(rich_file_file_name).gsub(/^\.+/, '').downcase == 'pdf'
         self.rich_file.instance_write(:content_type, "application/pdf")
       else
         self.rich_file.instance_write(:content_type, MIME::Types.type_for(rich_file_file_name)[0].content_type)
