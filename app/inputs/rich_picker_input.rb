@@ -13,25 +13,27 @@ if (Object.const_defined?("Formtastic") && Gem.loaded_specs["formtastic"].versio
         }
 
         if @object.send(method) =~ /(.pdf)$/
-          preview_type = "embed"
-        else
-          preview_type = "img"
-        end
+          input_wrapping do
 
-        input_wrapping do
+            label_html <<
+            builder.text_field(method, local_input_options.merge(input_html_options)) <<
+            " <a href='#{Rich.editor[:richBrowserUrl]}' class='button'>#{I18n.t('picker_browse')}</a>".html_safe <<
+            "</br></br><embed class='rich-image-preview' src='#{@object.send(method)}' style='height: 500px;width:915px; />".html_safe <<
+            "<script>$(function(){$('##{input_html_options[:id]}_input a').click(function(e){ e.preventDefault(); assetPicker.showFinder('##{input_html_options[:id]}', #{editor_options.to_json.html_safe})})})</script>".html_safe
 
-          label_html <<
-          builder.text_field(method, local_input_options.merge(input_html_options)) <<
-          " <a href='#{Rich.editor[:richBrowserUrl]}' class='button'>#{I18n.t('picker_browse')}</a>".html_safe <<
-          "</br></br>"
-          if preview_type == "img"
-            << "<img class='rich-image-preview' src='#{@object.send(method)}' style='height: 100px' />".html_safe <<
-          else
-            << "<embed class='rich-image-preview' src='#{@object.send(method)}' style='height: 500px;width:915px; />".html_safe <<
           end
-          "<script>$(function(){$('##{input_html_options[:id]}_input a').click(function(e){ e.preventDefault(); assetPicker.showFinder('##{input_html_options[:id]}', #{editor_options.to_json.html_safe})})})</script>".html_safe
+        else
+          input_wrapping do
 
+            label_html <<
+            builder.text_field(method, local_input_options.merge(input_html_options)) <<
+            " <a href='#{Rich.editor[:richBrowserUrl]}' class='button'>#{I18n.t('picker_browse')}</a>".html_safe <<
+            "</br></br><img class='rich-image-preview' src='#{@object.send(method)}' style='height: 100px' />".html_safe <<
+            "<script>$(function(){$('##{input_html_options[:id]}_input a').click(function(e){ e.preventDefault(); assetPicker.showFinder('##{input_html_options[:id]}', #{editor_options.to_json.html_safe})})})</script>".html_safe
+
+          end
         end
+
       end
 
     end
