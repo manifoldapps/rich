@@ -11,13 +11,12 @@ module Rich
     paginates_per 34
     
     has_attached_file :rich_file,
-                      :styles => Proc.new {|a| a.instance.set_styles },
-                      :convert_options => Proc.new { |a| Rich.convert_options[a] },
                       :storage => Rich.file_storage,
-                      :s3_permissions => :public_read,
                       :s3_host_alias => AWS_S3_BUCKET+'.s3.amazonaws.com',
                       :url => ':s3_alias_url',
-                      :s3_credentials => Rich.s3_credentials
+                      :s3_credentials => Rich.s3_credentials,
+                      :styles => Proc.new {|a| a.instance.set_styles },
+                      :convert_options => Proc.new { |a| Rich.convert_options[a] }
     
     validates_attachment_presence :rich_file
     validate :check_content_type
